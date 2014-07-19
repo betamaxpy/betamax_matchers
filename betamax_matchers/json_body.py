@@ -18,8 +18,8 @@ class JSONBodyMatcher(BaseMatcher):
         recorded = deserialize_prepared_request(recorded_request)
 
         # If neither of them have the right Content-Type set, return False
-        if not (is_json(request.headers['Content-Type']) and
-                is_json(recorded.headers['Content-Type'])):
+        if not (is_json(request.headers.get('Content-Type')) and
+                is_json(recorded.headers.get('Content-Type'))):
             return False
 
         if request.body:
@@ -40,4 +40,5 @@ def is_json(content_type):
         application/vnd.github.v3.full+json
 
     """
+    content_type = content_type or ''
     return content_type.startswith('application/') and 'json' in content_type
