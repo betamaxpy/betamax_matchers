@@ -10,7 +10,7 @@ JSON Body Matcher
 
 Usage::
 
-    from betamax_matchers.json import JSONBodyMatcher
+    from betamax_matchers.json_body import JSONBodyMatcher
 
     from betamax import Betamax
 
