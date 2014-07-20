@@ -22,11 +22,9 @@ class JSONBodyMatcher(BaseMatcher):
                 is_json(recorded.headers.get('Content-Type'))):
             return False
 
-        if request.body:
-            request_json = json.loads(request.body)
+        request_json = json.loads(request.body) if request.body else None
 
-        if recorded.body:
-            recorded_json = json.loads(recorded.body)
+        recorded_json = json.loads(recorded.body) if recorded.body else None
 
         return request_json == recorded_json
 
