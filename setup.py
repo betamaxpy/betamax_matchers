@@ -24,7 +24,7 @@ def data_for(filename):
     return content
 
 setup(
-    name="betamax_matchers",
+    name="betamax-matchers",
     version=__version__,
     description="A VCR imitation for python-requests",
     long_description="\n\n".join([data_for("README.rst"),
