@@ -26,9 +26,16 @@ class MultipartFormDataBodyMatcher(BaseMatcher):
         recorded_decoder = decoder.MultipartDecoder(recorded.body,
                                                     recorded_content_type)
 
-        # FIXME(sigmavirus24): Equality isn't defined on MultipartDecoders
-        return request_decoder == recorded_decoder
+        return decoders_equal(request_decoder, recorded_decoder)
 
 
 def is_formdata(header):
     return header is not None and header == 'multipart/form-data'
+
+
+def decoders_equal(request, recorded):
+    if len(request.parts) != len(recorded.parts):
+        return False
+
+    parts = zip(request.parts, recorded.parts)
+    return all(p1.content == p2.content for p1, p2 in parts)
