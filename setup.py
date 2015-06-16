@@ -3,7 +3,10 @@ import sys
 from setuptools import setup, find_packages
 
 packages = find_packages(exclude=['tests'])
-requires = ['betamax >= 0.3.2']
+requires = [
+    'betamax >= 0.3.2',
+    'requests-toolbelt >= 0.4.0',
+]
 
 try:
     from betamax_matchers import __version__
