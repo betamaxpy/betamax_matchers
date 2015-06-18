@@ -1,9 +1,10 @@
-import os
-import sys
 from setuptools import setup, find_packages
 
 packages = find_packages(exclude=['tests'])
-requires = ['betamax >= 0.3.2']
+requires = [
+    'betamax >= 0.3.2',
+    'requests-toolbelt >= 0.4.0',
+]
 
 try:
     from betamax_matchers import __version__
@@ -12,10 +13,6 @@ except ImportError:
 
 if not __version__:
     raise RuntimeError('Cannot import version information')
-
-if sys.argv[-1] in ['submit', 'publish']:
-    os.system("python setup.py sdist bdist_wheel upload")
-    sys.exit()
 
 
 def data_for(filename):
