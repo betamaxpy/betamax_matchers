@@ -1,5 +1,3 @@
-import os
-import sys
 from setuptools import setup, find_packages
 
 packages = find_packages(exclude=['tests'])
@@ -15,10 +13,6 @@ except ImportError:
 
 if not __version__:
     raise RuntimeError('Cannot import version information')
-
-if sys.argv[-1] in ['submit', 'publish']:
-    os.system("python setup.py sdist bdist_wheel upload")
-    sys.exit()
 
 
 def data_for(filename):

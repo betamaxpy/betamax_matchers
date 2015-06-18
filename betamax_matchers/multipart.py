@@ -21,21 +21,40 @@ class MultipartFormDataBodyMatcher(BaseMatcher):
                 is_formdata(recorded_content_type)):
             return False
 
-        request_decoder = decoder.MultipartDecoder(request.body,
-                                                   request_content_type)
-        recorded_decoder = decoder.MultipartDecoder(recorded.body,
-                                                    recorded_content_type)
+        try:
+            request_decoder = decoder.MultipartDecoder(
+                request.body.encode('utf-8'),
+                request_content_type
+            )
+            recorded_decoder = decoder.MultipartDecoder(
+                recorded.body.encode('utf-8'),
+                recorded_content_type
+            )
+        except decoder.ImproperBodyPartContentException:
+            # If we can't parse on of these bodies, we probably don't want to
+            # know anything about it.
+            return False
 
-        return decoders_equal(request_decoder, recorded_decoder)
+        if len(request_decoder.parts) != len(recorded_decoder.parts):
+            return False
+
+        parts = zip(sorted_by_headers(request_decoder),
+                    sorted_by_headers(recorded_decoder))
+        for p1, p2 in parts:
+            p1cd = p1.headers.get('Content-Disposition')
+            p2cd = p2.headers.get('Content-Disposition')
+            if (p1cd != p2cd or p1.content != p2.content):
+                return False
+
+        return True
 
 
 def is_formdata(header):
-    return header is not None and header == 'multipart/form-data'
+    return header is not None and header.startswith('multipart/form-data')
 
 
-def decoders_equal(request, recorded):
-    if len(request.parts) != len(recorded.parts):
-        return False
+def sorted_by_headers(decoder):
+    def get_headers(part):
+        return part.headers.get('Content-Disposition', '')
 
-    parts = zip(request.parts, recorded.parts)
-    return all(p1.content == p2.content for p1, p2 in parts)
+    return sorted(decoder.parts, key=get_headers)
