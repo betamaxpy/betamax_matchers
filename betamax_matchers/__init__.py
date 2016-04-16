@@ -10,8 +10,8 @@ See http://betamax.rtfd.org/ for documentation.
 """
 
 __author__ = 'Ian Cordasco'
-__copyright__ = 'Copyright 2014 Ian Cordasco'
+__copyright__ = 'Copyright 2014-2016 Ian Cordasco'
 __license__ = 'Apache 2.0'
 __title__ = 'betamax_matchers'
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 __version_info__ = tuple(int(i) for i in __version__.split('.'))
