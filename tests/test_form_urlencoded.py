@@ -1,7 +1,7 @@
 """Tests for the URLEncodedBodyMatcher."""
 import pytest
 
-from betamax.cassette.util import deserialize_prepared_request
+from betamax_matchers._compat import betamax_util as util
 from betamax_matchers.form_urlencoded import URLEncodedBodyMatcher
 
 
@@ -30,7 +30,7 @@ def recorded_request():
 @pytest.fixture
 def eq_request(recorded_request):
     """Provide a perfectly equal request."""
-    return deserialize_prepared_request(recorded_request)
+    return util.deserialize_prepared_request(recorded_request)
 
 
 @pytest.fixture
@@ -54,7 +54,7 @@ def neq_request(recorded_request):
     """Provide a not equal request."""
     req = recorded_request.copy()
     req['body'] = {'string': '{}', 'encoding': 'utf-8'}
-    return deserialize_prepared_request(req)
+    return util.deserialize_prepared_request(req)
 
 
 def test_equality(eq_request, recorded_request, matcher):

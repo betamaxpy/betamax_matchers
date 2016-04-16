@@ -1,7 +1,8 @@
 import json
 
 from betamax import BaseMatcher
-from betamax.cassette.util import deserialize_prepared_request
+
+from ._compat import betamax_util as util
 
 
 __all__ = ('JSONBodyMatcher',)
@@ -15,7 +16,7 @@ class JSONBodyMatcher(BaseMatcher):
 
     def match(self, request, recorded_request):
         """Determine if the JSON encoded bodies match."""
-        recorded = deserialize_prepared_request(recorded_request)
+        recorded = util.deserialize_prepared_request(recorded_request)
 
         # If neither of them have the right Content-Type set, return False
         if not (is_json(request.headers.get('Content-Type')) and

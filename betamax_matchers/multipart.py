@@ -1,7 +1,8 @@
 from requests_toolbelt.multipart import decoder
 
 from betamax import BaseMatcher
-from betamax.cassette.util import deserialize_prepared_request
+
+from ._compat import betamax_util as util
 
 
 class MultipartFormDataBodyMatcher(BaseMatcher):
@@ -12,7 +13,7 @@ class MultipartFormDataBodyMatcher(BaseMatcher):
 
     def match(self, request, recorded_request):
         """Determine if the form encoded bodies match."""
-        recorded = deserialize_prepared_request(recorded_request)
+        recorded = util.deserialize_prepared_request(recorded_request)
 
         # If neither of them have the right Content-Type set, return False
         request_content_type = request.headers.get('Content-Type')

@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from betamax.cassette.util import deserialize_prepared_request
+from betamax_matchers._compat import betamax_util as util
 from betamax_matchers import multipart
 
 
@@ -46,7 +46,7 @@ def recorded_request():
 @pytest.fixture
 def eq_request(recorded_request):
     """Provide a perfectly equal request."""
-    return deserialize_prepared_request(recorded_request)
+    return util.deserialize_prepared_request(recorded_request)
 
 
 @pytest.fixture
@@ -56,14 +56,14 @@ def neq_request(recorded_request):
     rec['body'] = rec['body'].copy()
     body = recorded_request['body']['string']
     rec['body']['string'] = body.replace('baz', 'replaced')
-    return deserialize_prepared_request(rec)
+    return util.deserialize_prepared_request(rec)
 
 
 @pytest.fixture
 def broken_request(recorded_request):
     recorded_request.copy()
     recorded_request['body']['string'] = '{"some": "json"}'
-    return deserialize_prepared_request(recorded_request)
+    return util.deserialize_prepared_request(recorded_request)
 
 
 def test_equality(eq_request, recorded_request, matcher):
