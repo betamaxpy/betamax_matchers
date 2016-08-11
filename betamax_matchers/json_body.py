@@ -18,10 +18,15 @@ class JSONBodyMatcher(BaseMatcher):
         """Determine if the JSON encoded bodies match."""
         recorded = util.deserialize_prepared_request(recorded_request)
 
-        # If neither of them have the right Content-Type set, return False
-        if not (is_json(request.headers.get('Content-Type')) and
-                is_json(recorded.headers.get('Content-Type'))):
+        recorded_type = recorded.headers.get('Content-Type')
+        request_type = request.headers.get('Content-Type')
+        # Short circuit fail when the content types do not match
+        if recorded_type != request_type:
             return False
+        # Short circuit pass when the content type is not json
+        # This permits other matchers to do the matching on this body.
+        if not is_json(recorded_type):
+            return True
 
         request_json = json.loads(request.body) if request.body else None
 
