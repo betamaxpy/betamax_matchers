@@ -1,3 +1,8 @@
+Unreleased
+----------
+
+- Remove support for python 3.2.
+
 0.3.0 - 2016-04-16
 ------------------
 
