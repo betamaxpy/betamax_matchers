@@ -57,7 +57,7 @@ def test_short_circuit_based_on_content_type(eq_request, recorded_request,
     assert matcher.match(eq_request, recorded_request) is False
 
     del recorded_request['headers']['Content-Type']
-    assert matcher.match(eq_request, recorded_request) is False
+    assert matcher.match(eq_request, recorded_request) is True
 
     eq_request.headers['Content-Type'] = 'application/json'
     assert matcher.match(eq_request, recorded_request) is False
