@@ -28,8 +28,10 @@ class JSONBodyMatcher(BaseMatcher):
         if not is_json(recorded_type):
             return True
 
-        request_json = json.loads(request.body) if request.body else None
-
+        if request.body:
+            request_json = json.loads(util.coerce_content(request.body))
+        else:
+            request_json = None
         recorded_json = json.loads(recorded.body) if recorded.body else None
 
         return request_json == recorded_json
