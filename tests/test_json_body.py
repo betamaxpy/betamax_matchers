@@ -29,7 +29,10 @@ def recorded_request():
 @pytest.fixture
 def eq_request(recorded_request):
     """Provide a perfectly equal request."""
-    return util.deserialize_prepared_request(recorded_request)
+    request = util.deserialize_prepared_request(recorded_request)
+    # With requests 2.11+ and python3 the request body is of type bytes.
+    request.body = request.body.encode('utf-8')
+    return request
 
 
 @pytest.fixture
