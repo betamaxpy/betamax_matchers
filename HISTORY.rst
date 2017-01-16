@@ -1,5 +1,5 @@
-Unreleased
-----------
+0.4.0 - 2017-01-16
+------------------
 
 - Remove support for python 3.2.
 - Change json-body matcher to pass when the recorded request has the same
